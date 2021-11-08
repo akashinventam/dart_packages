@@ -6,12 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -25,7 +23,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Example app: Sign in with Apple'),
         ),
         body: Container(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(10),
           child: Center(
             child: SignInWithAppleButton(
               onPressed: () async {
@@ -47,7 +45,6 @@ class _MyAppState extends State<MyApp> {
                   state: 'example-state',
                 );
 
-                // ignore: avoid_print
                 print(credential);
 
                 // This is the endpoint that will convert an authorization code obtained
@@ -58,13 +55,11 @@ class _MyAppState extends State<MyApp> {
                   path: '/sign_in_with_apple',
                   queryParameters: <String, String>{
                     'code': credential.authorizationCode,
-                    if (credential.givenName != null)
-                      'firstName': credential.givenName!,
-                    if (credential.familyName != null)
-                      'lastName': credential.familyName!,
+                    'firstName': credential.givenName,
+                    'lastName': credential.familyName,
                     'useBundleId':
                         Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
-                    if (credential.state != null) 'state': credential.state!,
+                    if (credential.state != null) 'state': credential.state,
                   },
                 );
 
@@ -74,7 +69,6 @@ class _MyAppState extends State<MyApp> {
 
                 // If we got this far, a session based on the Apple ID credential has been created in your system,
                 // and you can now set this as the app's session
-                // ignore: avoid_print
                 print(session);
               },
             ),

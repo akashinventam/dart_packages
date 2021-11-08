@@ -15,44 +15,39 @@ abstract class SignInWithAppleException implements Exception {
     switch (exception.code) {
       case 'not-supported':
         return SignInWithAppleNotSupportedException(
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
 
       /// Exceptions which indicate an [SignInWithAppleAuthorizationError]
       case 'authorization-error/unknown':
         return SignInWithAppleAuthorizationException(
           code: AuthorizationErrorCode.unknown,
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
       case 'authorization-error/canceled':
         return SignInWithAppleAuthorizationException(
           code: AuthorizationErrorCode.canceled,
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
       case 'authorization-error/invalidResponse':
         return SignInWithAppleAuthorizationException(
           code: AuthorizationErrorCode.invalidResponse,
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
       case 'authorization-error/notHandled':
         return SignInWithAppleAuthorizationException(
           code: AuthorizationErrorCode.notHandled,
-          message: exception.message ?? 'no message provided',
-        );
-      case 'authorization-error/notInteractive':
-        return SignInWithAppleAuthorizationException(
-          code: AuthorizationErrorCode.notInteractive,
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
       case 'authorization-error/failed':
         return SignInWithAppleAuthorizationException(
           code: AuthorizationErrorCode.failed,
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
 
       case 'credentials-error':
         return SignInWithAppleCredentialsException(
-          message: exception.message ?? 'no message provided',
+          message: exception.message,
         );
 
       default:
@@ -68,7 +63,7 @@ abstract class SignInWithAppleException implements Exception {
 class UnknownSignInWithAppleException extends PlatformException
     implements SignInWithAppleException {
   UnknownSignInWithAppleException({
-    required PlatformException platformException,
+    @required PlatformException platformException,
   }) : super(
           code: platformException.code,
           message: platformException.message,
@@ -83,8 +78,8 @@ class UnknownSignInWithAppleException extends PlatformException
 /// An [SignInWithAppleException] which will be thrown in case Sign in with Apple is not supported.
 class SignInWithAppleNotSupportedException implements SignInWithAppleException {
   const SignInWithAppleNotSupportedException({
-    required this.message,
-  });
+    @required this.message,
+  }) : assert(message != null);
 
   /// A message specifying more details about why Sign in with Apple is not supported
   final String message;
@@ -109,9 +104,6 @@ enum AuthorizationErrorCode {
   /// The authorization request wasn’t handled.
   notHandled,
 
-  /// The authorization request isn’t interactive.
-  notInteractive,
-
   /// The authorization attempt failed for an unknown reason.
   unknown,
 }
@@ -122,9 +114,10 @@ enum AuthorizationErrorCode {
 class SignInWithAppleAuthorizationException
     implements SignInWithAppleException {
   const SignInWithAppleAuthorizationException({
-    required this.code,
-    required this.message,
-  });
+    @required this.code,
+    @required this.message,
+  })  : assert(code != null),
+        assert(message != null);
 
   /// A more exact code of what actually went wrong
   final AuthorizationErrorCode code;
@@ -138,8 +131,8 @@ class SignInWithAppleAuthorizationException
 
 class SignInWithAppleCredentialsException implements SignInWithAppleException {
   const SignInWithAppleCredentialsException({
-    required this.message,
-  });
+    @required this.message,
+  }) : assert(message != null);
 
   /// The localized error message from the native code.
   final String message;
