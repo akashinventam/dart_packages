@@ -25,8 +25,13 @@ public class SignInWithAppleUnavailablePlugin: NSObject, FlutterPlugin {
             return
         }
         
-        result(
-            SignInWithAppleError.notSupported.toFlutterError()
-        )
+        if #available(iOS 13.0, *) {
+            result(
+                SignInWithAppleError.notSupported.toFlutterError()
+            )
+        } else {
+            // Fallback on earlier versions
+            result(FlutterMethodNotImplemented)
+        }
     }
 }
